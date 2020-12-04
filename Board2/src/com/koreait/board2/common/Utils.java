@@ -7,10 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class Utils {
-	public static void forward(String target, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public static void forward(String title, String target, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String jsp = "/WEB-INF/JSP/temp/template.jsp";
-		request.setAttribute("page", "/WEB-INF/JSP/%s.jsp" + target);
+		request.setAttribute("page", String.format("/WEB-INF/JSP/%s.jsp", target));
+		request.setAttribute("title", title);
 		request.getRequestDispatcher(jsp).forward(request, response);
+	}
+	
+	public static void forwardErr(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		forward("에러발생", "err", request, response);
 	}
 	
 	public static int getIntParam(HttpServletRequest request, String key) {

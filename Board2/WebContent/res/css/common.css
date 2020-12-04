@@ -17,6 +17,8 @@ a {
 #container {
 	width: 100%;
 	height: 100%;
+	display: flex;
+	flex-direction: column;
 }
 
 header {
@@ -34,6 +36,7 @@ header ul:after {
 header li {
 	float: left;
 	width: 110px;
+	height: 50px;
 }
 header li:hover {
 	background-color: #FEE4DF;
@@ -44,4 +47,16 @@ header a {
 	font-weight: bold;
 	text-align: center;
 	padding: 14px 16px; 
+}
+
+#container section {
+	flex-grow: 1;
+}
+
+.centerCont {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }

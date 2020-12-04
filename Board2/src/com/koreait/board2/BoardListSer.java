@@ -20,11 +20,13 @@ public class BoardListSer extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int typ = Utils.getIntParam(request, "typ", 1);
 		System.out.println("typ = " + typ);
+		
 		BoardVO param = new BoardVO();
+		param.setTyp(typ);
 		
+		request.setAttribute("typ", typ);
+		request.setAttribute("list", BoardService.selBoardList(param));
 		
-		request.setAttribute("title", "리스트");
-		
-		Utils.forward("bList", request, response);
+		Utils.forward("전체 목록","bList", request, response);
 	}
 }
