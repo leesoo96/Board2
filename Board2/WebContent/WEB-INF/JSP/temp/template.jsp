@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>${title }</title>
 <!-- 인터넷 캐시때문에 바뀐 css,js가 바로 적용이 안될 수 있다. 리로드할때 ver를 수정해주는 방법 등이 있다 -->
-<link rel="stylesheet" href="res/css/common.css?ver=1">
+<link rel="stylesheet" href="res/css/common.css?ver=3">
 <script defer type="text/javascript" src="res/js/common.js?ver=1"></script>
 </head>
 <body>

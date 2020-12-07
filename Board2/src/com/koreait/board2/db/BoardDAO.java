@@ -29,7 +29,6 @@ public class BoardDAO {
 				
 				vo.setI_board(rs.getInt("i_board"));
 				vo.setTitle(rs.getString("title"));
-				vo.setCtnt(rs.getString("ctnt"));
 				vo.setR_dt(rs.getString("r_dt"));
 				
 				list.add(vo);
@@ -45,6 +44,30 @@ public class BoardDAO {
 	}
 	
 //	글 읽기
+	public static void readBoard(final BoardVO param) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = " SELECT * FROM t_board_? WHERE i_board = ? ";
+		
+		try {
+			conn = DBUtils.getConn();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, param.getTyp());
+			pstmt.setInt(2, param.getI_board());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				param.setI_board(rs.getInt("i_board"));
+				param.setTitle(rs.getString("title"));
+				param.setCtnt(rs.getString("ctnt"));
+				param.setR_dt(rs.getString("r_dt"));
+			}
+		} catch (Exception e) {
+			e.getMessage();
+		} finally {
+			DBUtils.close(conn, pstmt, rs);
+		}
+	}
 	
 //	글 쓰기
 	public static int insBoard(BoardVO param) {
@@ -74,4 +97,25 @@ public class BoardDAO {
 //	글 수정
 	
 //	글 삭제
+	public static int delBoard(final BoardVO param) {
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = " DELETE FROM t_board_? WHERE i_board = ? ";
+		
+		try {
+			conn = DBUtils.getConn();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, param.getTyp());
+			pstmt.setInt(2, param.getI_board());
+			
+			result = pstmt.executeUpdate();	
+		} catch (Exception e) {
+			e.getMessage();
+		} finally {
+			DBUtils.close(conn, pstmt);
+		}
+		
+		return result;
+	}
 }

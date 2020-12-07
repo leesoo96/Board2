@@ -1,7 +1,14 @@
 @charset "UTF-8";
 
+@font-face {
+    font-family: 'Jal_Onuel';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/Jal_Onuel.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 * {
 	box-sizing: border-box;
+	font-family: 'Jal_Onuel';
 }
 html, body, ul, li {
 	margin: 0; padding: 0;
@@ -22,7 +29,7 @@ a {
 }
 
 header {
-	background-color: #FFB4A4;
+	background-color: #C3E3FF;
 	height: 50px;
 }
 header ul {
@@ -39,12 +46,12 @@ header li {
 	height: 50px;
 }
 header li:hover {
-	background-color: #FEE4DF;
+	background-color: #F7F0FF;
 }
 header a {
 	display: block;
 	color: black;
-	font-weight: bold;
+	font-size: 18px;
 	text-align: center;
 	padding: 14px 16px; 
 }

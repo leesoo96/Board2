@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+h2, p, small, a {
+	margin: 0; padding: 0;
+}
+h2 {
+	padding: 24px 0 0 10px;
+}
+p {
+	margin: 10px 0 1% 14px;
+	font-size: 17px;
+}
+span {
+	margin: 5px 0 0 14px;
+	font-size: 14px;
+}
+a {
+	text-decoration: none;
+}
+
+#contents {
+	margin: 10px 0 0 10px;
+	width: 400px; height: 200px;
+	background: #DEDEDE;
+	border-radius: 10px;
+}
