@@ -34,6 +34,7 @@ public class BoardDetail extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
+//		글 삭제
 		int typ = Utils.getIntParam(request, "typ");
 		int i_board = Utils.getIntParam(request, "i_board");
 		
@@ -41,7 +42,7 @@ public class BoardDetail extends HttpServlet {
 		param.setTyp(typ);
 		param.setI_board(i_board);
 		
-		int result = BoardDAO.delBoard(param);
+		int result = BoardDAO.delBoard(param); 
 		if(result == 0) {
 			request.setAttribute("msg", "삭제할 수 없습니다.");
 			doGet(request, response);

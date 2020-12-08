@@ -3,6 +3,7 @@ package com.koreait.board2.db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,8 +75,40 @@ public class BoardDAO {
 		int result = 0;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		String sql = " INSERT INTO t_board_? (title, ctnt) "
 					 + " VALUES (?, ?) "; 
+		
+		try {
+			conn = DBUtils.getConn();
+			pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pstmt.setInt(1, param.getTyp());
+			pstmt.setString(2, param.getTitle());
+			pstmt.setString(3, param.getCtnt());
+			
+			rs = pstmt.getGeneratedKeys();
+			if(rs.next()) {
+				int i_board = rs.getInt(1); // 1번을 얻어와서 
+				param.setI_board(i_board);  // i_board의 값을 1번으로 바꾼다
+			}
+			
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.getMessage();
+		} finally {
+			DBUtils.close(conn, pstmt, rs);
+		}
+		
+		return result;
+	}
+	
+//	글 수정
+	public static int upBoard(BoardVO param) {
+		int result = 0;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = " UPDATE t_board_? SET title = ?, ctnt = ? WHERE i_board = ? ";
 		
 		try {
 			conn = DBUtils.getConn();
@@ -83,6 +116,7 @@ public class BoardDAO {
 			pstmt.setInt(1, param.getTyp());
 			pstmt.setString(2, param.getTitle());
 			pstmt.setString(3, param.getCtnt());
+			pstmt.setInt(4, param.getI_board());
 			
 			result = pstmt.executeUpdate();
 		} catch (Exception e) {
@@ -93,8 +127,6 @@ public class BoardDAO {
 		
 		return result;
 	}
-	
-//	글 수정
 	
 //	글 삭제
 	public static int delBoard(final BoardVO param) {

@@ -1,5 +1,7 @@
 package com.koreait.board2;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.List;
 
 import com.koreait.board2.db.BoardDAO;
@@ -13,8 +15,7 @@ public class BoardService {
 	
 	public static int regmod(BoardVO param) {
 		if(param.getI_board() > 0) {
-//			TODO 수정
-			return 0;
+			return BoardDAO.upBoard(param);
 		}else {
 //			등록
 			return BoardDAO.insBoard(param);
