@@ -38,7 +38,15 @@ public class BoardDetail extends HttpServlet {
 		int i_board = Utils.getIntParam(request, "i_board");
 		
 		BoardVO param = new BoardVO();
-		BoardDAO.delBoard(param);
+		param.setTyp(typ);
+		param.setI_board(i_board);
+		
+		int result = BoardDAO.delBoard(param);
+		if(result == 0) {
+			request.setAttribute("msg", "삭제할 수 없습니다.");
+			doGet(request, response);
+			return;
+		}
 		
 		response.sendRedirect("/bList?typ=" + typ);
 	}
