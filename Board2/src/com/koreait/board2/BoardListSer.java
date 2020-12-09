@@ -26,7 +26,7 @@ public class BoardListSer extends HttpServlet {
 		
 		request.setAttribute("typ", typ);
 		request.setAttribute("list", BoardService.selBoardList(param));
-		
+
 		Utils.forward("전체 목록","bList", request, response);
 	}
 }

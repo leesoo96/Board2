@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <form action="/bDetail" method="post" onsubmit="return delConfirm();">
 	<div>
-	번호 : ${contents.i_board} <br/>
+	번호 : ${contents.i_board} 조회수 : ${contents.hits }<br/>
 	제목 : ${contents.title } <br/>
 	내용 : ${contents.ctnt } <br/>
 	작성날짜 : ${contents.r_dt } <br/>

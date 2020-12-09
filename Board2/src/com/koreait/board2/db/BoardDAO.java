@@ -17,7 +17,8 @@ public class BoardDAO {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql = " SELECT * FROM t_board_? ORDER BY i_board DESC ";
+		String sql = " SELECT i_board, title, hits, r_dt "
+					 + " FROM t_board_? ORDER BY i_board DESC ";
 		
 		try {
 			conn = DBUtils.getConn();
@@ -31,6 +32,7 @@ public class BoardDAO {
 				vo.setI_board(rs.getInt("i_board"));
 				vo.setTitle(rs.getString("title"));
 				vo.setR_dt(rs.getString("r_dt"));
+				vo.setHits(rs.getInt("hits"));
 				
 				list.add(vo);
 					
@@ -49,7 +51,8 @@ public class BoardDAO {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql = " SELECT * FROM t_board_? WHERE i_board = ? ";
+		String sql = " SELECT i_board, title, ctnt, r_dt, hits "
+					 + " FROM t_board_? WHERE i_board = ? ";
 		
 		try {
 			conn = DBUtils.getConn();
@@ -62,6 +65,7 @@ public class BoardDAO {
 				param.setTitle(rs.getString("title"));
 				param.setCtnt(rs.getString("ctnt"));
 				param.setR_dt(rs.getString("r_dt"));
+				param.setHits(rs.getInt("hits"));
 			}
 		} catch (Exception e) {
 			e.getMessage();
@@ -80,16 +84,17 @@ public class BoardDAO {
 					 + " VALUES (?, ?) "; 
 		
 		try {
-			conn = DBUtils.getConn();
+			conn = DBUtils.getConn();          
 			pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setInt(1, param.getTyp());
 			pstmt.setString(2, param.getTitle());
 			pstmt.setString(3, param.getCtnt());
-			
+//			 		   PK값을 가져온다
 			rs = pstmt.getGeneratedKeys();
+			
 			if(rs.next()) {
-				int i_board = rs.getInt(1); // 1번을 얻어와서 
-				param.setI_board(i_board);  // i_board의 값을 1번으로 바꾼다
+				int i_board = rs.getInt(1); // 1번쩨 컬럼을 얻어와서 
+				param.setI_board(i_board);  // i_board의 값을 1번으로 바꾼다(원래 0번)
 			}
 			
 			result = pstmt.executeUpdate();
@@ -126,6 +131,25 @@ public class BoardDAO {
 		}
 		
 		return result;
+	}
+//	조회수 증가
+	public static void addHits(BoardVO param) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = " UPDATE t_board_? SET hits = hits + 1 "
+					 + " WHERE i_board = ? ";
+		
+		try {
+			conn = DBUtils.getConn();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, param.getTyp());
+			pstmt.setInt(2, param.getI_board());
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.getMessage();
+		} finally {
+			DBUtils.close(conn, pstmt);
+		}
 	}
 	
 //	글 삭제

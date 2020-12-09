@@ -8,12 +8,14 @@
 			<td>번호</td>
 			<td>제목</td>
 			<td>작성날짜</td>
+			<td>조회수</td>
 		</tr>
 		<c:forEach items="${list }" var="item">
 			<tr class="pointer" onclick="clickItem(${typ }, ${item.i_board });">
 				<td>${item.i_board}</td>
 				<td>${item.title}</td>
 				<td>${item.r_dt}</td>
+				<td>${item.hits }</td>
 			</tr>
 		</c:forEach>
 	</table>
