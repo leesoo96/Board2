@@ -26,3 +26,7 @@ td {
 button {
 	margin: 0 3%;
 }
+
+.pageContainer {
+	text-align: center;
+}

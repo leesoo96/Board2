@@ -10,6 +10,32 @@ import java.util.List;
 import com.koreait.board2.model.BoardVO;
 
 public class BoardDAO {
+//	페이징
+	public static int selPageCount(final BoardVO param) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = " SELECT ceil(COUNT(i_board) / ?) "
+					 + " FROM t_board_? ";
+//					데이터의 총 개수 / 리스트에 보여질 게시물의 최대 개수
+		try {
+			conn = DBUtils.getConn();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, param.getRowCntPerPage());
+			pstmt.setInt(2, param.getTyp());
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				return rs.getInt(1); // 가장 첫번째 결과값을 가지고 온다
+			}
+		} catch (Exception e) {
+			e.getMessage();
+		} finally {
+			DBUtils.close(conn, pstmt, rs);
+		}
+		
+		return 0;
+	}
 	
 //	서브 페이지의 글 목록 확인
 	public static List<BoardVO> selBoard(final BoardVO param){
@@ -18,12 +44,15 @@ public class BoardDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = " SELECT i_board, title, hits, r_dt "
-					 + " FROM t_board_? ORDER BY i_board DESC ";
+					 + " FROM t_board_? ORDER BY i_board DESC "
+					 + " LIMIT ?, ? ";
 		
 		try {
 			conn = DBUtils.getConn();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, param.getTyp());
+			pstmt.setInt(2, param.getS_Index()); // 0
+			pstmt.setInt(3, param.getRowCntPerPage()); // 가져올 데이터 개수 
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -89,15 +118,17 @@ public class BoardDAO {
 			pstmt.setInt(1, param.getTyp());
 			pstmt.setString(2, param.getTitle());
 			pstmt.setString(3, param.getCtnt());
+			result =  pstmt.executeUpdate();
+			
 //			 		   PK값을 가져온다
 			rs = pstmt.getGeneratedKeys();
 			
 			if(rs.next()) {
 				int i_board = rs.getInt(1); // 1번쩨 컬럼을 얻어와서 
+				System.out.println("ins i_board = " + i_board);
 				param.setI_board(i_board);  // i_board의 값을 1번으로 바꾼다(원래 0번)
 			}
 			
-			result = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.getMessage();
 		} finally {

@@ -9,7 +9,9 @@ import com.koreait.board2.model.BoardVO;
 
 public class BoardService {
 
-	public static List<BoardVO> selBoardList(BoardVO param){
+	public static List<BoardVO> selBoardList(BoardVO param, int page){
+		int s_idx = (page - 1) * param.getRowCntPerPage(); // 글 목록에 보일 게시물 개수
+		param.setS_Index(s_idx);
 		return BoardDAO.selBoard(param);
 	}
 	
@@ -20,5 +22,9 @@ public class BoardService {
 //			등록
 			return BoardDAO.insBoard(param);
 		}
+	}
+	
+	public static int selPageCount(BoardVO param) {
+		return BoardDAO.selPageCount(param);
 	}
 }

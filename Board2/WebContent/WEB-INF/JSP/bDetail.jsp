@@ -18,7 +18,6 @@
 </a>
 <a href="/bList?typ=${contents.typ}">돌아가기</a>
 
-
 <script>
 	function delConfirm(){
 		var alert = confirm('정말 삭제하시겠습니까?');

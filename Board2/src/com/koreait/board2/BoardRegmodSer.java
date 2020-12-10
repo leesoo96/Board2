@@ -75,8 +75,8 @@ public class BoardRegmodSer extends HttpServlet {
 			doGet(request, response);
 			return;
 		}
-		
-		response.sendRedirect("/bDetail?typ=" + typ + "&i_board=" + i_board);
+
+		response.sendRedirect("/bDetail?typ=" + typ + "&i_board=" + param.getI_board());
 	}
 
 }

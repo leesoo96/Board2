@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
-<link rel="stylesheet" href="res/css/bList.css?ver=2">
+<link rel="stylesheet" href="res/css/bList.css?ver=3">
 <div>
 	<table>
 		<tr>
@@ -19,6 +19,13 @@
 			</tr>
 		</c:forEach>
 	</table>
+	<div class="pageContainer">
+		<c:forEach begin="1" end="${pageCnt}" var="i">
+			<span class="page">
+				<a href="/bList?typ=${typ}&page=${i}">${i}</a>
+			</span>
+		</c:forEach>
+	</div>
 	<div>
 		<a href="/bRegmod?typ=${typ }"><button>WRITE</button></a>
 	</div>

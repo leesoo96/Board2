@@ -8,7 +8,21 @@ public class BoardVO {
 	private String r_dt;
 	private int typ;
 	private int hits;
+	private int rowCntPerPage; 
+	private int s_Index; 
 	
+	public int getS_Index() {
+		return s_Index;
+	}
+	public void setS_Index(int s_Index) {
+		this.s_Index = s_Index;
+	}
+	public int getRowCntPerPage() {
+		return rowCntPerPage;
+	}
+	public void setRowCntPerPage(int rowCntPerPage) {
+		this.rowCntPerPage = rowCntPerPage;
+	}
 	public int getHits() {
 		return hits;
 	}

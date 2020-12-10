@@ -19,13 +19,16 @@ public class BoardListSer extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int typ = Utils.getIntParam(request, "typ", 1);
-		System.out.println("typ = " + typ);
+		int page = Utils.getIntParam(request, "page", 1); 
+		System.out.println("typ = " + typ + " / page = " + page);
 		
 		BoardVO param = new BoardVO();
 		param.setTyp(typ);
+		param.setRowCntPerPage(5); // 한 페이지 당 보일 게시물의 최대 개수 (가져오는 데이터 개수)를 5개로 한정
 		
+		request.setAttribute("pageCnt", BoardService.selPageCount(param));
 		request.setAttribute("typ", typ);
-		request.setAttribute("list", BoardService.selBoardList(param));
+		request.setAttribute("list", BoardService.selBoardList(param, page));
 
 		Utils.forward("전체 목록","bList", request, response);
 	}
