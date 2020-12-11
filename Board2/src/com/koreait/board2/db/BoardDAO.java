@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.koreait.board2.model.BoardCmtVO;
 import com.koreait.board2.model.BoardVO;
 
 public class BoardDAO {
@@ -101,6 +102,40 @@ public class BoardDAO {
 		} finally {
 			DBUtils.close(conn, pstmt, rs);
 		}
+	}
+
+//	댓글 읽기
+	public static List<BoardCmtVO> readCmtList(final BoardVO param){
+		List<BoardCmtVO> list = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = " SELECT i_cmt, ctnt FROM t_board_cmt_? "
+					 + " WHERE i_board = ? "
+					 + " ORDER BY i_board DESC ";
+		
+		try {
+			conn = DBUtils.getConn();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, param.getTyp());
+			pstmt.setInt(2, param.getI_board());
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				BoardCmtVO cmtVo = new BoardCmtVO();
+				cmtVo.setI_cmt(rs.getInt("i_cmt"));
+				cmtVo.setCtnt(rs.getString("ctnt"));
+				
+				list.add(cmtVo);
+			}
+			
+		} catch (Exception e) {
+			e.getMessage();
+		} finally {
+			DBUtils.close(conn, pstmt, rs);
+		}
+		
+		return list;
 	}
 	
 //	글 쓰기
@@ -204,5 +239,24 @@ public class BoardDAO {
 		}
 		
 		return result;
+	}
+	
+	public static int myExecuteUpdate(String sql, SQLInterUpdate sqlInter) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+	
+		try {
+			conn = DBUtils.getConn();
+			pstmt = conn.prepareStatement(sql);
+			sqlInter.proc(pstmt);
+		
+			return pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.getMessage();
+		} finally {
+			DBUtils.close(conn, pstmt);
+		}
+		
+		return 0;
 	}
 }

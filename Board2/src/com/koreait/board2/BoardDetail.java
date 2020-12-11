@@ -1,6 +1,8 @@
 package com.koreait.board2;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Enumeration;
 
 import javax.servlet.ServletContext;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.koreait.board2.common.Utils;
 import com.koreait.board2.db.BoardDAO;
+import com.koreait.board2.db.SQLInterUpdate;
 import com.koreait.board2.model.BoardVO;
 
 @WebServlet("/bDetail")
@@ -41,7 +44,18 @@ public class BoardDetail extends HttpServlet {
 		String savedIp = (String) application.getAttribute(key); // 처음 들어오면 null값이 들어있다
 		if(!ip.equals(savedIp)) { // 아이피가 다르면 조회수 증가 O
 			application.setAttribute(key, ip);
-			BoardDAO.addHits(param);
+			String sql = " UPDATE t_board_? SET hits = hits + 1 "
+					 	 + " WHERE i_board = ? ";
+			
+			BoardDAO.myExecuteUpdate(sql, new SQLInterUpdate() {
+				
+				@Override
+				public void proc(PreparedStatement pstmt) throws SQLException {
+					pstmt.setInt(1, param.getTyp());
+					pstmt.setInt(2, param.getI_board());	
+				}
+			});
+//			BoardDAO.addHits(param);
 		}
 		
 		Enumeration<String> strArr = application.getAttributeNames();
@@ -57,7 +71,10 @@ public class BoardDetail extends HttpServlet {
 		BoardDAO.readBoard(param);
 				
 		request.setAttribute("contents", param);
-	
+		
+//		댓글목록확인처리는 여기서!
+		request.setAttribute("cmtContents", BoardService.readCmtList(param)); 
+		
 		Utils.forward("글읽기", "/bDetail", request, response);
 	}
 	
