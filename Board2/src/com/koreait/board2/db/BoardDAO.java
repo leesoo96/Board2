@@ -241,6 +241,7 @@ public class BoardDAO {
 		return result;
 	}
 	
+//	AOP
 	public static int myExecuteUpdate(String sql, SQLInterUpdate sqlInter) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
